@@ -1,4 +1,5 @@
 
+// PRE-ENTREGA-1 ====================================================================================
 
 // //Presentacion de los articulos:
 // console.log('Multitienda ShopUniverso');
@@ -127,86 +128,181 @@
 
 
 
+//PRE-ENTREGA-2 ==================================================================================
+
+// console.log('Multitienda ShopUniverso');
+// console.log('Productos disponibles:');
+// console.log("1 GOMAS NIKE. Precio: $80.000");
+// console.log("2 AUDIFONOS. Precio: $20.000");
+// console.log("3 RELOJ. Precio: $50.000");
+// console.log("4 SMARTWATCH. Precio: $90.000");
+// console.log("5 PERFUMES. Precio: $50.000");
+// console.log("6 GORRA. Precio: $20.000");
+// console.log("");
 
 
-console.log('Multitienda ShopUniverso');
-console.log('Productos disponibles:');
-console.log("1 GOMAS NIKE. Precio: $80.000");
-console.log("2 AUDIFONOS. Precio: $20.000");
-console.log("3 RELOJ. Precio: $50.000");
-console.log("4 SMARTWATCH. Precio: $90.000");
-console.log("5 PERFUMES. Precio: $50.000");
-console.log("6 GORRA. Precio: $20.000");
-console.log("");
+// // Definimos un array con objetos que representan los productos
+// const productos = [
+//     { id: 1, 
+//         nombre: "Zapatos Nike", 
+//         precio: 80000 
+//     },
+//     { id: 2, 
+//         nombre: "Audífonos", 
+//         precio: 20000 
+//     },
+//     { id: 3, 
+//         nombre: "Reloj", 
+//         precio: 50000 
+//     },
+//     { id: 4, 
+//         nombre: "Smartwatch", 
+//         precio: 90000 
+//     },
+//     { id: 5, 
+//         nombre: "Perfume", 
+//         precio: 50000 
+//     },
+//     { id: 6, 
+//         nombre: "Gorras", 
+//         precio: 20000 
+//     },
+// ];
+
+// // Array para almacenar los productos seleccionados
+// let carrito = [];
+
+// // Función para seleccionar productos
+// const seleccionarProductos = () => {
+//     productos.forEach(producto => {
+//         const deseaAgregar = confirm(`¿Deseas agregar ${producto.nombre} al carrito?`);
+//         if (deseaAgregar) {
+//             const cantidad = parseInt(prompt(`¿Cuántos ${producto.nombre} deseas?`)) || 0;
+//             if (cantidad > 0) {
+//                 // Agregar el producto con la cantidad seleccionada al carrito
+//                 carrito.push({ ...producto, cantidad });
+//             }
+//         }
+//     });
+// };
+
+// // Función para calcular el total del carrito
+// const calcularTotal = () => {
+//     return carrito.reduce((total, item) => total + (item.precio * item.cantidad), 0);
+// };
+
+// // Función para mostrar los productos seleccionados
+// const mostrarCarrito = () => {
+//     if (carrito.length === 0) {
+//         console.log("No has seleccionado ningún producto.");
+//     } else {
+//         console.log("Productos en el carrito:");
+//         carrito.forEach(({ nombre, cantidad, precio }) => {
+//             const subtotal = precio * cantidad;
+//             console.log(`${nombre}: ${cantidad} unidades - Subtotal: $${subtotal}`);
+//         });
+        
+//         const total = calcularTotal();
+//         console.log(`Total a pagar: $${total}`);
+//         console.log("Gracias por su compra. ¡FELIZ DÍA!");
+//     }
+// };
+
+// // Ejecutar la selección de productos y mostrar el carrito
+// seleccionarProductos();
+// mostrarCarrito();
 
 
-// Definimos un array con objetos que representan los productos
+
+// PRE-ENTREGA-3 ====================================================================================
+
+
+// Array de productos (ejemplo) y carga dinámica de productos en el DOM
 const productos = [
     { id: 1, 
         nombre: "Zapatos Nike", 
-        precio: 80000 
+        precio: 80000, 
+        img: "img/zapatos-nike.jpg" 
     },
     { id: 2, 
         nombre: "Audífonos", 
-        precio: 20000 
+        precio: 20000, 
+        img: "img/audifonos.jpg" 
     },
     { id: 3, 
         nombre: "Reloj", 
-        precio: 50000 
+        precio: 50000, 
+        img: "img/relojes.jpg" 
     },
     { id: 4, 
         nombre: "Smartwatch", 
-        precio: 90000 
+        precio: 90000, 
+        img: "img/smartwatch.jpg" 
     },
     { id: 5, 
         nombre: "Perfume", 
-        precio: 50000 
+        precio: 50000, 
+        img: "img/perfumes.jpg" 
     },
     { id: 6, 
-        nombre: "Gorras", 
-        precio: 20000 
+        nombre: "Gorra", 
+        precio: 20000, 
+        img: "img/gorras.jpg" 
     },
 ];
 
-// Array para almacenar los productos seleccionados
-let carrito = [];
+// Variables para manejar el carrito y el contador
+let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+const contadorProductos = document.getElementById("contador-productos");
 
-// Función para seleccionar productos
-const seleccionarProductos = () => {
+// Función para generar los productos
+const generarProductos = () => {
+    const contenedorProductos = document.getElementById("productos-items");
+    contenedorProductos.innerHTML = "";
     productos.forEach(producto => {
-        const deseaAgregar = confirm(`¿Deseas agregar ${producto.nombre} al carrito?`);
-        if (deseaAgregar) {
-            const cantidad = parseInt(prompt(`¿Cuántos ${producto.nombre} deseas?`)) || 0;
-            if (cantidad > 0) {
-                // Agregar el producto con la cantidad seleccionada al carrito
-                carrito.push({ ...producto, cantidad });
-            }
-        }
+        const productoHTML = `
+            <div class="item">
+                <figure><img src="${producto.img}" alt="${producto.nombre}"></figure>
+                <div class="info-product">
+                    <h2>${producto.nombre}</h2>
+                    <p class="price">$${producto.precio}</p>
+                    <button class="boton" data-id="${producto.id}">Añadir al carrito</button>
+                </div>
+            </div>
+        `;
+        contenedorProductos.insertAdjacentHTML("beforeend", productoHTML); //método inserta código HTML en una posición específica.
     });
 };
 
-// Función para calcular el total del carrito
-const calcularTotal = () => {
-    return carrito.reduce((total, item) => total + (item.precio * item.cantidad), 0);
-};
+// Función para agregar productos al carrito
+const agregarAlCarrito = idProducto => {
+    const productoEncontrado = productos.find(producto => producto.id === idProducto);
+    const productoEnCarrito = carrito.find(item => item.id === idProducto);
 
-// Función para mostrar los productos seleccionados
-const mostrarCarrito = () => {
-    if (carrito.length === 0) {
-        console.log("No has seleccionado ningún producto.");
+    if (productoEnCarrito) {
+        productoEnCarrito.cantidad++;
     } else {
-        console.log("Productos en el carrito:");
-        carrito.forEach(({ nombre, cantidad, precio }) => {
-            const subtotal = precio * cantidad;
-            console.log(`${nombre}: ${cantidad} unidades - Subtotal: $${subtotal}`);
-        });
-        
-        const total = calcularTotal();
-        console.log(`Total a pagar: $${total}`);
-        console.log("Gracias por su compra. ¡FELIZ DÍA!");
+        carrito.push({ ...productoEncontrado, cantidad: 1 });
     }
+
+    actualizarCarrito();
 };
 
-// Ejecutar la selección de productos y mostrar el carrito
-seleccionarProductos();
-mostrarCarrito();
+// Función para actualizar el carrito en localStorage y el contador
+const actualizarCarrito = () => {
+    localStorage.setItem("carrito", JSON.stringify(carrito));
+    contadorProductos.textContent = carrito.reduce((total, item) => total + item.cantidad, 0);
+};
+
+// Evento para añadir productos al carrito
+document.addEventListener("click", e => {
+    if (e.target.classList.contains("boton")) {
+        const idProducto = parseInt(e.target.dataset.id);
+        agregarAlCarrito(idProducto);
+    }
+});
+
+// Renderizamos los productos al cargar la página y actualizamos el carrito
+generarProductos();
+actualizarCarrito();
+

@@ -353,6 +353,14 @@ header {
     width: 25px;
     height: 25px;
 }
+.icon-cart{
+    width: 40px;
+    height: 40px;
+    stroke: #000;
+}
+.icon-cart:hover{
+    cursor: pointer;
+}
 
 .cart-total {
     display: flex;
