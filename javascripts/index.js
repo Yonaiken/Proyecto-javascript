@@ -217,92 +217,213 @@
 // PRE-ENTREGA-3 ====================================================================================
 
 
-// Array de productos (ejemplo) y carga dinámica de productos en el DOM
+//Array de productos (ejemplo) y carga dinámica de productos en el DOM
+// const productos = [
+//     { id: 1, 
+//         nombre: "Zapatos Nike", 
+//         precio: 80000, 
+//         img: "img/zapatos-nike.jpg" 
+//     },
+//     { id: 2, 
+//         nombre: "Audífonos", 
+//         precio: 20000, 
+//         img: "img/audifonos.jpg" 
+//     },
+//     { id: 3, 
+//         nombre: "Reloj", 
+//         precio: 50000, 
+//         img: "img/relojes.jpg" 
+//     },
+//     { id: 4, 
+//         nombre: "Smartwatch", 
+//         precio: 90000, 
+//         img: "img/smartwatch.jpg" 
+//     },
+//     { id: 5, 
+//         nombre: "Perfume", 
+//         precio: 50000, 
+//         img: "img/perfumes.jpg" 
+//     },
+//     { id: 6, 
+//         nombre: "Gorra", 
+//         precio: 20000, 
+//         img: "img/gorras.jpg" 
+//     },
+// ];
+
+// // Variables para manejar el carrito y el contador
+// let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+// const contadorProductos = document.getElementById("contador-productos");
+
+// // Función para generar los productos
+// const generarProductos = () => {
+//     const contenedorProductos = document.getElementById("productos-items");
+//     contenedorProductos.innerHTML = "";
+//     productos.forEach(producto => {
+//         const productoHTML = `
+//             <div class="item">
+//                 <figure><img src="${producto.img}" alt="${producto.nombre}"></figure>
+//                 <div class="info-product">
+//                     <h2>${producto.nombre}</h2>
+//                     <p class="price">$${producto.precio}</p>
+//                     <button class="boton" data-id="${producto.id}">Añadir al carrito</button>
+//                 </div>
+//             </div>
+//         `;
+//         contenedorProductos.insertAdjacentHTML("beforeend", productoHTML); //método inserta código HTML en una posición específica.
+//     });
+// };
+
+// // Función para agregar productos al carrito
+// const agregarAlCarrito = idProducto => {
+//     const productoEncontrado = productos.find(producto => producto.id === idProducto);
+//     const productoEnCarrito = carrito.find(item => item.id === idProducto);
+
+//     if (productoEnCarrito) {
+//         productoEnCarrito.cantidad++;
+//     } else {
+//         carrito.push({ ...productoEncontrado, cantidad: 1 });
+//     }
+
+//     actualizarCarrito();
+// };
+
+// // Función para actualizar el carrito en localStorage y el contador
+// const actualizarCarrito = () => {
+//     localStorage.setItem("carrito", JSON.stringify(carrito));
+//     contadorProductos.textContent = carrito.reduce((total, item) => total + item.cantidad, 0);
+// };
+
+// // Evento para añadir productos al carrito
+// document.addEventListener("click", e => {
+//     if (e.target.classList.contains("boton")) {
+//         const idProducto = parseInt(e.target.dataset.id);
+//         agregarAlCarrito(idProducto);
+//     }
+// });
+
+// // Renderizamos los productos al cargar la página y actualizamos el carrito
+// generarProductos();
+// actualizarCarrito();
+
+//=====================       PROYECTO FINAL    ====================================================
+
 const productos = [
-    { id: 1, 
-        nombre: "Zapatos Nike", 
-        precio: 80000, 
-        img: "img/zapatos-nike.jpg" 
-    },
-    { id: 2, 
-        nombre: "Audífonos", 
-        precio: 20000, 
-        img: "img/audifonos.jpg" 
-    },
-    { id: 3, 
-        nombre: "Reloj", 
-        precio: 50000, 
-        img: "img/relojes.jpg" 
-    },
-    { id: 4, 
-        nombre: "Smartwatch", 
-        precio: 90000, 
-        img: "img/smartwatch.jpg" 
-    },
-    { id: 5, 
-        nombre: "Perfume", 
-        precio: 50000, 
-        img: "img/perfumes.jpg" 
-    },
-    { id: 6, 
-        nombre: "Gorra", 
-        precio: 20000, 
-        img: "img/gorras.jpg" 
-    },
+    { id: 1, nombre: 'Zapatos Nike', precio: 80, imagen: 'img/zapatos-nike.jpg' },
+    { id: 2, nombre: 'Audifonos', precio: 20, imagen: 'img/audifonos.jpg' },
+    { id: 3, nombre: 'Gorras', precio: 15, imagen: 'img/gorras.jpg' },
+    { id: 4, nombre: 'Perfumes', precio: 90, imagen: 'img/perfumes.jpg' },
+    { id: 5, nombre: 'Relojes', precio: 30, imagen: 'img/relojes.jpg' },
+    { id: 6, nombre: 'Smartwatch', precio: 40, imagen: 'img/smartwatch.jpg'}
 ];
 
-// Variables para manejar el carrito y el contador
-let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-const contadorProductos = document.getElementById("contador-productos");
 
-// Función para generar los productos
-const generarProductos = () => {
-    const contenedorProductos = document.getElementById("productos-items");
-    contenedorProductos.innerHTML = "";
+const carrito = [];
+
+
+const listaProductos = document.getElementById('lista-productos');
+const itemsCarrito = document.getElementById('items-carrito');
+const precioTotal = document.getElementById('precio-total');
+const contadorCarrito = document.getElementById('contador-carrito');
+const carritoSeccion = document.getElementById('carrito');
+
+
+function renderizarProductos() {
     productos.forEach(producto => {
-        const productoHTML = `
-            <div class="item">
-                <figure><img src="${producto.img}" alt="${producto.nombre}"></figure>
-                <div class="info-product">
-                    <h2>${producto.nombre}</h2>
-                    <p class="price">$${producto.precio}</p>
-                    <button class="boton" data-id="${producto.id}">Añadir al carrito</button>
-                </div>
-            </div>
+        const tarjetaProducto = document.createElement('div');
+        tarjetaProducto.classList.add('tarjeta-producto');
+        tarjetaProducto.innerHTML = `
+            <img src="${producto.imagen}" alt="${producto.nombre}">
+            <p>${producto.nombre}</p>
+            <p>Precio: $${producto.precio}</p>
+            <button onClick="agregarAlCarrito(${producto.id})">Agregar al carrito</button>
         `;
-        contenedorProductos.insertAdjacentHTML("beforeend", productoHTML); //método inserta código HTML en una posición específica.
+        listaProductos.appendChild(tarjetaProducto);
     });
-};
+}
 
-// Función para agregar productos al carrito
-const agregarAlCarrito = idProducto => {
-    const productoEncontrado = productos.find(producto => producto.id === idProducto);
-    const productoEnCarrito = carrito.find(item => item.id === idProducto);
 
-    if (productoEnCarrito) {
-        productoEnCarrito.cantidad++;
-    } else {
-        carrito.push({ ...productoEncontrado, cantidad: 1 });
-    }
+//agregar productos y sumas toastify
 
+function agregarAlCarrito(id) {
+        const producto = productos.find(item => item.id === id);
+        carrito.push(producto);
+        actualizarCarrito();
+        Toastify({
+            text: `${producto.nombre}, agregado al carrito`,
+            duration: 3000,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "green"
+        }).showToast();
+
+
+}
+
+// eliminar productos del carrito
+function eliminarDelCarrito(indice){
+    carrito.splice(indice, 1);//que inicie en indice 0, 1 => indica cuantos elemento se tienen q eliminar
     actualizarCarrito();
-};
+}
+function actualizarCarrito() {
+    renderizarCarrito();
+    actualizarTotal()
+    actualizarContador()
+}
 
-// Función para actualizar el carrito en localStorage y el contador
-const actualizarCarrito = () => {
-    localStorage.setItem("carrito", JSON.stringify(carrito));
-    contadorProductos.textContent = carrito.reduce((total, item) => total + item.cantidad, 0);
-};
+function renderizarCarrito() {
+    itemsCarrito.innerHTML = '';
+    carrito.forEach((item, indice) => {
+        const li = document.createElement('li');
+        li.innerHTML=`
+            ${item.nombre} - ${item.precio};
+            <button onclick = "eliminarDelCarrito(${indice})"> X </button>
+        `
+        itemsCarrito.appendChild(li)
+    })
+}
 
-// Evento para añadir productos al carrito
-document.addEventListener("click", e => {
-    if (e.target.classList.contains("boton")) {
-        const idProducto = parseInt(e.target.dataset.id);
-        agregarAlCarrito(idProducto);
+//actualizacion total
+
+function actualizarTotal() {
+    const total = carrito.reduce((acum, item)=> acum + item.precio,0);
+    precioTotal.textContent = total;
+}
+//actualizar contador
+
+function actualizarContador() {
+    contadorCarrito.textContent = carrito.length;
+}
+
+//estilos para q se muestre el carrito
+
+function alternarCarrito() {
+    carritoSeccion.style.display = carritoSeccion.style.display === 'none' || carritoSeccion.style.display === '' ? 'block' : 'none';
+}
+
+// finalizar compra
+
+function finalizarCompra(){
+    if(carrito.length === 0) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'El carrito está vacío',
+            text: 'Por favor agregue productos al carrito',
+            // confirmButtonText: 'Aceptar'
+        }); 
+    }else {
+        Swal.fire({
+            icon: 'success',
+            title: 'Compra finalizada',
+            text: 'Gracias por su compra',
+            // confirmButtonText: 'Aceptar'
+
+        }).then(()=>{
+            carrito.length = 0;
+            actualizarCarrito();
+            
+        })
     }
-});
-
-// Renderizamos los productos al cargar la página y actualizamos el carrito
-generarProductos();
-actualizarCarrito();
+}
+renderizarProductos();
 
